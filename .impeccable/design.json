@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-16T00:00:00Z",
+  "title": "Design System: AtivaWriter Panel",
+  "extensions": {
+    "colorMeta": {
+      "pencil-red": { "role": "primary", "displayName": "Pencil Red", "canonical": "#b23a24", "tonalRamp": ["#2b0d06", "#4a170e", "#6f2116", "#8f2c1a", "#a3341f", "#b23a24", "#c85a44", "#e08f7c"] },
+      "ink": { "role": "neutral", "displayName": "Press Ink", "canonical": "#221e18", "tonalRamp": ["#0e0c09", "#161310", "#221e18", "#2f2a21", "#4a4335", "#6b6252", "#94897314", "#c7bfae"] },
+      "ink-soft": { "role": "neutral", "displayName": "Ink Soft", "canonical": "#4a4335", "tonalRamp": ["#1c1911", "#2f2a21", "#4a4335", "#655c49", "#847860", "#a4977d", "#c4b89f", "#e2dac6"] },
+      "paper": { "role": "neutral", "displayName": "Paper", "canonical": "#efe7d3", "tonalRamp": ["#5c5541", "#867a5c", "#ad9f7c", "#cabf9e", "#e4d9bf", "#efe7d3", "#f5efe2", "#faf6ee"] },
+      "paper-deep": { "role": "neutral", "displayName": "Paper Deep", "canonical": "#e4d9bf", "tonalRamp": ["#524a34", "#786c4c", "#9c8e68", "#bdae87", "#d4c6a4", "#e4d9bf", "#eee6d5", "#f6f1e6"] },
+      "paper-edge": { "role": "neutral", "displayName": "Paper Edge", "canonical": "#d8caa8", "tonalRamp": ["#493f27", "#6c5f3c", "#8f7e52", "#b1a06c", "#c8ba8c", "#d8caa8", "#e5dabf", "#f0e8d6"] },
+      "shell": { "role": "neutral", "displayName": "Shell", "canonical": "#15130f", "tonalRamp": ["#050403", "#0c0b09", "#15130f", "#211e17", "#332f24", "#4c4636", "#6b6350", "#948a70"] },
+      "shell-deep": { "role": "neutral", "displayName": "Shell Deep", "canonical": "#0c0b09", "tonalRamp": ["#020202", "#050404", "#0c0b09", "#151310", "#221f19", "#332f25", "#4a4436", "#67604d"] },
+      "shell-line": { "role": "neutral", "displayName": "Shell Line", "canonical": "#322c22", "tonalRamp": ["#0f0d0a", "#1a1712", "#261f18", "#322c22", "#453c2f", "#5c5140", "#797056", "#9c9073"] },
+      "shell-text": { "role": "neutral", "displayName": "Shell Text", "canonical": "#d9d0bd", "tonalRamp": ["#4b4536", "#6d654f", "#8e8468", "#ada182", "#c3b9a1", "#d9d0bd", "#e7e1d3", "#f2eee5"] },
+      "shell-text-dim": { "role": "neutral", "displayName": "Shell Text Dim", "canonical": "#8d8370", "tonalRamp": ["#2c2820", "#443f32", "#5e5745", "#766d58", "#8d8370", "#a69c88", "#c0b8a4", "#dad4c5"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display / Masthead", "purpose": "Masthead wordmark and login credential mark only." },
+      "section-label": { "displayName": "Section Label", "purpose": "Panel headers, underlined with a hairline rule." },
+      "label": { "displayName": "Field Label", "purpose": "Form field labels and ghost text-links." },
+      "body": { "displayName": "Typed Body", "purpose": "All textarea/input content and typed-copy readouts (wire-status, results)." }
+    },
+    "shadows": [
+      { "name": "panel-rest", "value": "0 24px 48px -28px rgba(0,0,0,0.75), 0 4px 10px -4px rgba(0,0,0,0.5)", "purpose": "Ambient shadow under .paper panels (main and result sheets)." },
+      { "name": "credential-rest", "value": "0 28px 56px -30px rgba(0,0,0,0.8), 0 6px 14px -6px rgba(0,0,0,0.5)", "purpose": "Slightly heavier ambient shadow under the login credential card." },
+      { "name": "preview-thumb", "value": "0 6px 14px -6px rgba(0,0,0,0.5)", "purpose": "Under each clipped image-preview thumbnail." },
+      { "name": "stamp-active-glow", "value": "0 0 0 6px rgba(178,58,36,0.12)", "purpose": "Soft red ring on stamp-button active/press state." }
+    ],
+    "motion": [
+      { "name": "stamp-press", "value": "transform 0.18s cubic-bezier(0.16,1,0.3,1), box-shadow 0.18s ease, background-color 0.15s ease", "purpose": "Stamp button rotation-reset and scale-down on press." },
+      { "name": "field-transition", "value": "border-color 0.15s ease, background-color 0.15s ease", "purpose": "Dropzone and field hover/focus/dragover transitions." },
+      { "name": "wire-blink", "value": "wire-blink 1s steps(1) infinite (opacity 1 -> 0 at 50%)", "purpose": "Blinking cursor caret on the live wire-status readout." }
+    ],
+    "breakpoints": [
+      { "name": "stack", "value": "860px", "purpose": "Below this width the two-column desk grid collapses to one column and shell/paper padding tightens." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Stamp Button",
+      "kind": "button",
+      "refersTo": "stamp-btn-primary",
+      "description": "Circular double-ring rubber-stamp button for commit actions (Gerar resposta, Entrar, Copiar).",
+      "html": "<button class=\"ds-stamp-btn ds-stamp-btn--lg\" type=\"button\">Gerar resposta</button>",
+      "css": ".ds-stamp-btn { position: relative; font-family: 'Oswald', 'Arial Narrow', sans-serif; font-weight: 700; font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; color: #a3341f; background: transparent; border: 2px solid #a3341f; border-radius: 999px; padding: 0.75rem 1.9rem; cursor: pointer; transform: rotate(-2deg); transition: transform 0.18s cubic-bezier(0.16,1,0.3,1), box-shadow 0.18s ease, background-color 0.15s ease; } .ds-stamp-btn::before { content: ''; position: absolute; inset: 3px; border: 1px solid #a3341f; border-radius: 999px; opacity: 0.55; pointer-events: none; } .ds-stamp-btn--lg { font-size: 0.92rem; padding: 0.95rem 2.6rem; transform: rotate(-1.4deg); } .ds-stamp-btn:hover { background: rgba(178,58,36,0.08); } .ds-stamp-btn:focus-visible { outline: 2px solid #a3341f; outline-offset: 3px; } .ds-stamp-btn:active { transform: rotate(0deg) scale(0.94); box-shadow: 0 0 0 6px rgba(178,58,36,0.12); }"
+    },
+    {
+      "name": "Ghost Text Link",
+      "kind": "button",
+      "refersTo": "text-link",
+      "description": "Secondary action (Nova resposta, Sair) rendered as a dotted-underline uppercase label, not a button.",
+      "html": "<button class=\"ds-text-link\" type=\"button\">Nova resposta</button>",
+      "css": ".ds-text-link { font-family: 'Oswald', 'Arial Narrow', sans-serif; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; background: none; border: none; padding: 0; color: #a3341f; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; cursor: pointer; } .ds-text-link--muted { color: #4a4335; } .ds-text-link:focus-visible { outline: 2px solid #a3341f; outline-offset: 3px; }"
+    },
+    {
+      "name": "Typed Textarea",
+      "kind": "input",
+      "refersTo": "paper-panel",
+      "description": "Ruled-paper textarea for pasted email text / notes, monospace typewriter face.",
+      "html": "<textarea class=\"ds-typed-textarea\" rows=\"5\" placeholder=\"Cole aqui o texto do e-mail recebido...\"></textarea>",
+      "css": ".ds-typed-textarea { width: 100%; font-family: 'Courier Prime', 'Courier New', monospace; font-size: 0.98rem; line-height: 1.6; color: #221e18; background-color: #efe7d3; background-image: linear-gradient(#d8caa8 1px, transparent 1px); background-size: 100% 1.85em; background-position: 0 0.2em; border: 1px solid #d8caa8; border-radius: 0; padding: 0.8rem 0.8rem 0.8rem 2.6rem; resize: vertical; caret-color: #b23a24; } .ds-typed-textarea::placeholder { color: #4a4335; font-style: italic; } .ds-typed-textarea:focus-visible { outline: 2px solid #a3341f; outline-offset: 3px; }"
+    },
+    {
+      "name": "Paper Panel",
+      "kind": "card",
+      "refersTo": "paper-panel",
+      "description": "Flat cream work-surface panel with printed masthead rule and left margin rule; the core container of the system.",
+      "html": "<div class=\"ds-paper\"><div class=\"ds-paper-margin\"></div><h2 class=\"ds-section-label\">Despacho recebido</h2><p>Conteudo do painel.</p></div>",
+      "css": ".ds-paper { position: relative; background: #efe7d3; padding: 2.2rem 2.2rem 2.2rem 3.6rem; border-radius: 0; box-shadow: 0 24px 48px -28px rgba(0,0,0,0.75), 0 4px 10px -4px rgba(0,0,0,0.5); color: #221e18; } .ds-paper-margin { position: absolute; top: 0; bottom: 0; left: 2.75rem; width: 1px; background: rgba(178,58,36,0.35); } .ds-section-label { font-family: 'Oswald', 'Arial Narrow', sans-serif; font-size: 0.95rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #221e18; margin: 0 0 1.4rem; padding-bottom: 0.4rem; border-bottom: 1px solid #d8caa8; }"
+    },
+    {
+      "name": "Masthead Nav",
+      "kind": "nav",
+      "refersTo": "paper-panel",
+      "description": "Wordmark + live wire-clock + sign-out link standing in for top navigation.",
+      "html": "<header class=\"ds-masthead\"><div class=\"ds-masthead-row\"><p class=\"ds-masthead-mark\">ATIVAWRITER</p><div class=\"ds-masthead-meta\"><time class=\"ds-wire-clock\">14:32:07</time><button class=\"ds-text-link\" type=\"button\">SAIR</button></div></div><p class=\"ds-masthead-sub\">Mesa de Despacho &middot; uso interno</p></header>",
+      "css": ".ds-masthead { border-bottom: 2px solid #221e18; padding-bottom: 0.8rem; margin-bottom: 2.2rem; } .ds-masthead-row { display: flex; align-items: baseline; justify-content: space-between; gap: 0.8rem; } .ds-masthead-meta { display: flex; align-items: baseline; gap: 1.4rem; } .ds-wire-clock { font-family: 'Courier Prime', 'Courier New', monospace; font-size: 0.82rem; color: #4a4335; font-variant-numeric: tabular-nums; } .ds-masthead-mark { font-family: 'Oswald', 'Arial Narrow', sans-serif; font-weight: 700; font-size: clamp(1.9rem, 4vw, 2.6rem); text-transform: uppercase; color: #221e18; margin: 0; } .ds-masthead-sub { font-family: 'Oswald', 'Arial Narrow', sans-serif; font-size: 0.8rem; font-weight: 500; color: #4a4335; margin: 0.4rem 0 0; }"
+    },
+    {
+      "name": "Image Preview (clipped thumbnail)",
+      "kind": "custom",
+      "refersTo": "paper-panel",
+      "description": "Pasted-screenshot thumbnail styled as a clipped, slightly rotated photo with an inline SVG paperclip.",
+      "html": "<div class=\"ds-image-preview\"><svg class=\"ds-icon-clip\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M8 12.5V7a4 4 0 0 1 8 0v10a2.5 2.5 0 0 1-5 0V8.5\"/></svg><img src=\"\" alt=\"\" /></div>",
+      "css": ".ds-image-preview { position: relative; width: 92px; height: 92px; background: #fff; padding: 4px 4px 14px; box-shadow: 0 6px 14px -6px rgba(0,0,0,0.5); transform: rotate(1.8deg); } .ds-image-preview img { width: 100%; height: 100%; object-fit: cover; display: block; } .ds-icon-clip { position: absolute; top: -9px; left: 50%; width: 1.3em; height: 1.3em; color: #322c22; transform: translateX(-50%) rotate(-8deg); filter: drop-shadow(0 2px 1px rgba(0,0,0,0.35)); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Copydesk Table",
+    "overview": "A wire-service desk under work light: raw dispatch enters at the left, edited copy exits at the right, red-pencil marks show the edit. The system rejects the centered SaaS card with a gradient CTA that every AI writing tool defaults to — there is no card, no gradient, no rounded hero. Instead there is a dark shell (the room) holding a lit sheet of cream newsprint (the desk), stamped and ruled like a physical production floor. Density is working-tool density: labels are terse and uppercase, textareas carry a faint ruled-paper rhythm, and the one recurring interaction — the circular red-pencil stamp — is reserved for the two actions that actually commit something (submit a login, generate a reply, copy the result). Everything else is flat, quiet, and typewritten.",
+    "keyCharacteristics": [
+      "Dark shell (near-black) containing a lit cream \"paper\" work surface — not a global light/dark theme swap.",
+      "Pencil-red (#b23a24 family) as the single accent: stamps, focus, error, the printed margin rule.",
+      "Condensed uppercase display face (Oswald) for mastheads/labels; monospace typewriter face (Courier Prime) for all typed content.",
+      "Flat, square-edged panels with a printed masthead rule — never a rounded card.",
+      "Circular/pill stamp buttons (double-ring, rotated) are the only rounded, decorative shape in the system; everything else is right-angled or a hairline rule."
+    ],
+    "rules": [
+      { "name": "The One Red Rule", "body": "Pencil-red is the only chromatic accent in the system. It never appears as a background fill larger than a button or a thin rule; its job is to mark action and edit, not to decorate area.", "section": "colors" },
+      { "name": "The Lit-Desk Rule", "body": "The dark shell and the cream paper are not alternate themes — the shell is always dark, the paper is always cream. Don't introduce a light-shell variant or a dark-paper variant; the contrast between room and desk is the composition.", "section": "colors" },
+      { "name": "The Typed-vs-Printed Rule", "body": "Anything the person types or the model generates renders in Courier Prime (typed copy). Anything the interface itself prints — labels, masthead, buttons — renders in Oswald uppercase (printed matter). Don't mix the two roles.", "section": "typography" },
+      { "name": "The Desk-Light Rule", "body": "Shadows are always soft, large-blur, and directionless (ambient light from above), never a hard offset block shadow. Depth reads as \"paper resting under work light,\" not as a graphic outline.", "section": "elevation" },
+      { "name": "The Stamp-Is-Special Rule", "body": "Circular/pill shapes and rotation are reserved for the stamp button family and the image-preview clip stack. No other component (cards, inputs, nav, labels) is ever rounded or rotated — the stamp motif stays legible as a signature, not a general corner-radius default.", "section": "shapes" }
+    ],
+    "dos": [
+      "Do keep pencil-red (#b23a24 / #a3341f) as the only chromatic accent; every other surface stays ink/paper/shell neutrals.",
+      "Do render all typed/generated content in Courier Prime and all interface-printed labels/headers in Oswald uppercase — never swap the two roles.",
+      "Do use the double-ring pill/circle stamp shape only for primary commit actions (submit, generate, copy); keep every other shape square or hairline-ruled.",
+      "Do keep shadows soft, large-blur, and directionless (ambient desk light); never a hard offset block shadow."
+    ],
+    "donts": [
+      "Don't round or shadow-elevate ordinary containers (panels, note-cards, textareas, dropzones) — they are cut paper sheets, flat and square, not cards.",
+      "Don't introduce a light-shell/dark-paper inversion; the dark shell and cream paper are fixed, not a theme toggle (product confirmed single dark theme).",
+      "Don't add icon-font or emoji glyphs; the system's only icons are the four inline SVG symbols already defined (upload, x/remove, stamp-check, paperclip) — extend by adding new inline SVGs in the same line-icon style, not a font.",
+      "Don't add a Google-Fonts or other third-party CDN font link; both faces are self-hosted under /fonts to keep the no-build, single-container deploy constraint intact."
+    ]
+  }
+}

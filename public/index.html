@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AtivaWriter</title>
+  <link rel="stylesheet" href="/fonts/fonts.css" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <svg aria-hidden="true" class="icon-sprite">
+    <symbol id="icon-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 15V3M12 3 8 7M12 3l4 4" />
+      <path d="M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4" />
+    </symbol>
+    <symbol id="icon-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <path d="M6 6l12 12M18 6 6 18" />
+    </symbol>
+    <symbol id="icon-stamp-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M8 12.3l2.6 2.6L16 9" />
+    </symbol>
+    <symbol id="icon-clip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 12.5V7a4 4 0 0 1 8 0v10a2.5 2.5 0 0 1-5 0V8.5" />
+    </symbol>
+  </svg>
+
+  <div id="login-screen" class="screen shell" hidden>
+    <div class="credential">
+      <span class="credential-stamp">ACESSO</span>
+      <p class="credential-mark">ATIVAWRITER</p>
+      <p class="credential-sub">Mesa de Despacho &middot; acesso da equipe</p>
+      <form id="login-form" class="credential-form">
+        <label class="field-label" for="login-password">SENHA DO TIME</label>
+        <input type="password" id="login-password" class="typed-input" autocomplete="current-password" required />
+        <button type="submit" class="stamp-btn">ENTRAR</button>
+        <p id="login-error" class="marginal-note" hidden></p>
+      </form>
+    </div>
+  </div>
+
+  <div id="app-screen" class="screen shell" hidden>
+    <div class="desk">
+      <div class="paper paper--main">
+        <header class="masthead">
+          <div class="masthead-row">
+            <p class="masthead-mark">ATIVAWRITER</p>
+            <div class="masthead-meta">
+              <time id="wire-clock" class="wire-clock" aria-label="Horário atual"></time>
+              <button id="logout-btn" type="button" class="text-link">SAIR</button>
+            </div>
+          </div>
+          <p class="masthead-sub">Mesa de Despacho &middot; uso interno</p>
+        </header>
+
+        <div class="desk-grid">
+          <section class="desk-col desk-col--wide" aria-labelledby="in-label">
+            <h2 id="in-label" class="section-label">Despacho recebido</h2>
+
+            <div class="field-block">
+              <span class="field-label">Print(s) da conversa</span>
+              <div id="dropzone" class="dropzone" tabindex="0">
+                <svg class="icon icon-upload" aria-hidden="true"><use href="#icon-upload" /></svg>
+                <p class="dropzone-text">
+                  Cole com <strong>Ctrl+V</strong>, arraste imagens aqui, ou
+                  <label for="images-input" class="text-link">escolha arquivo(s)</label>
+                </p>
+                <input type="file" id="images-input" accept="image/*" multiple hidden />
+              </div>
+              <div id="image-preview-list" class="image-preview-list"></div>
+            </div>
+
+            <div class="field-block">
+              <label class="field-label" for="email-text">Texto do e-mail</label>
+              <textarea id="email-text" class="typed-textarea" rows="7" placeholder="Opcional se já colou print. Cole aqui o texto do e-mail recebido..."></textarea>
+            </div>
+          </section>
+
+          <aside class="desk-col desk-col--narrow" aria-labelledby="notes-label">
+            <h2 id="notes-label" class="section-label">Notas da mesa</h2>
+
+            <div class="note-card">
+              <label class="field-label" for="signature">Assinatura</label>
+              <textarea id="signature" class="typed-textarea" rows="3" placeholder="Sua assinatura real, pra usar no final..."></textarea>
+            </div>
+            <div class="note-card">
+              <label class="field-label" for="client-context">Contexto do cliente</label>
+              <textarea id="client-context" class="typed-textarea" rows="4" placeholder="O que já foi combinado com esse cliente..."></textarea>
+              <div class="file-attach">
+                <label for="context-file-input" class="text-link text-link--muted">Anexar arquivo (PDF, DOCX ou TXT)</label>
+                <input type="file" id="context-file-input" accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" hidden />
+                <div id="context-file-chip" class="file-chip" hidden>
+                  <span id="context-file-name" class="file-chip-name"></span>
+                  <button id="context-file-remove" type="button" class="remove-btn" aria-label="Remover arquivo de contexto">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-x" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="note-card">
+              <label class="field-label" for="reference-block">Respostas anteriores</label>
+              <textarea id="reference-block" class="typed-textarea" rows="4" placeholder="Cole 1+ respostas parecidas, pra manter o estilo..."></textarea>
+            </div>
+          </aside>
+        </div>
+
+        <div class="action-bar">
+          <button id="generate-btn" type="button" class="stamp-btn stamp-btn--lg">Gerar resposta</button>
+          <button id="clear-btn" type="button" class="text-link text-link--muted">Nova resposta</button>
+          <span id="generate-status" class="wire-status"></span>
+        </div>
+
+        <p id="generate-error" class="marginal-note" hidden></p>
+      </div>
+
+      <div class="paper paper--result" id="result-panel" hidden>
+        <div class="result-header">
+          <svg class="icon" aria-hidden="true"><use href="#icon-stamp-check" /></svg>
+          <h2 class="section-label">Copy aprovada</h2>
+        </div>
+        <textarea id="result-text" class="typed-textarea result-text" rows="11"></textarea>
+        <div class="result-actions">
+          <button id="copy-btn" type="button" class="stamp-btn">Copiar</button>
+          <span id="copy-feedback" class="wire-status"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
