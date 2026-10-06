@@ -597,6 +597,119 @@ body {
 
 /* ---- responsive: stack the desk on narrow screens ---- */
 
+/* ---- abas (Despacho / Negativação) ---- */
+.tab-bar {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.tab-btn {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: var(--space-1) 0;
+  cursor: pointer;
+}
+.tab-btn:hover {
+  color: var(--ink);
+}
+.tab-btn.is-active {
+  color: var(--red-ink);
+  border-bottom-color: var(--red-ink);
+}
+
+/* o painel de copy aprovada só faz sentido na aba Despacho */
+.desk[data-tab="negativacao"] #result-panel {
+  display: none !important;
+}
+
+/* ---- aba Negativação ---- */
+.neg-hint {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  margin: 0 0 var(--space-3);
+}
+.neg-row {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  flex-wrap: wrap;
+}
+.neg-input {
+  flex: 1;
+  min-width: 14rem;
+}
+.neg-history-label {
+  margin-top: var(--space-4);
+}
+.neg-runs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.neg-run {
+  border-bottom: 1px solid var(--paper-edge);
+}
+.neg-run-head {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: var(--space-2);
+  align-items: baseline;
+  width: 100%;
+  text-align: left;
+  font-family: var(--font-type);
+  font-size: 0.9rem;
+  color: var(--ink);
+  background: none;
+  border: none;
+  padding: var(--space-2) 0.1rem;
+  cursor: pointer;
+}
+.neg-run-value {
+  overflow-wrap: anywhere;
+}
+.neg-run-when {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+.neg-status {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.neg-status--completed {
+  color: #2f6b2f;
+}
+.neg-status--failed {
+  color: var(--red-deep);
+}
+.neg-run-detail {
+  padding: 0 0.1rem var(--space-2);
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
+.neg-run-detail table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.neg-run-detail th,
+.neg-run-detail td {
+  text-align: left;
+  padding: 0.25rem 0.4rem 0.25rem 0;
+  border-top: 1px solid var(--paper-edge);
+}
+
 @media (max-width: 860px) {
   .desk-grid {
     grid-template-columns: 1fr;

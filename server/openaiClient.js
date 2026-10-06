@@ -8,6 +8,8 @@
 // adaptados pra preservar hierarquia CONTEXTO DO CLIENTE / RESPOSTAS ANTERIORES,
 // suporte a imagem e CTA sem horário fixo (pede disponibilidade em vez de ofertar).
 
+const { brasiliaPromptContext } = require('./brazilCalendar')
+
 const CHAT_MODEL = process.env.OPENAI_MODEL || 'gpt-4.1-mini'
 
 class OpenAiError extends Error {}
@@ -94,6 +96,19 @@ CTA:
 - Não ofereça horários específicos nem invente disponibilidade — peça a disponibilidade do destinatário, não determine um horário fixo.
 - Esta seção também está subordinada à HIERARQUIA DE RESPOSTA — nenhum CTA pode violar restrição do CONTEXTO DO CLIENTE.
 
+HORÁRIOS (REGRA RÍGIDA):
+- Use a seção DATA E HORA ATUAL (Brasília) do prompt como única referência de data; nunca invente datas nem dias da semana.
+- Expediente comercial: segunda a sexta, das 09h às 18h, exceto 12h–14h (almoço). Fim de semana, feriado nacional e fora desse intervalo não existem para marcação.
+- Se o destinatário propuser um horário fora do expediente, no almoço, em feriado, fim de semana ou que já passou, não aceite: explique em uma frase curta e peça uma alternativa, ou ofereça um dia útil válido da lista, dentro do expediente.
+- Se o horário proposto estiver dentro do expediente e for um dia útil válido, confirme-o diretamente.
+
+PEDIDO DE REMOÇÃO / DESCADASTRO:
+- Se o remetente pedir para ser removido da lista, parar de receber e-mails, descadastrar ou disser que não tem interesse em receber mais contatos, trate como opt-out.
+- Responda em no máximo 2 ou 3 frases curtas: peça desculpas pelo incômodo, confirme que o e-mail foi removido e que não receberá novos contatos.
+- Nunca insista, nunca faça pergunta, nunca proponha reunião, ligação, material, demonstração ou "última chance", nem tente reverter a decisão ou justificar a abordagem.
+- Não mencione serviços, benefícios ou a Ativa.ai além do necessário para se despedir com cordialidade.
+- Esta regra vale mesmo se o CONTEXTO DO CLIENTE ou as respostas anteriores sugerirem avanço comercial, e substitui as seções PERSUASÃO COMERCIAL e CTA.
+
 FORMATO:
 - Corpo do e-mail pronto para colar.
 - Não adicionar explicações antes do texto.
@@ -103,6 +118,9 @@ FORMATO:
 
 function buildPromptText({ emailText, signature, clientContext, referenceBlock, hasImages }) {
   return `
+### DATA E HORA ATUAL (Brasília)
+${brasiliaPromptContext()}
+
 ### ASSINATURA
 Use esta assinatura real ao final da resposta, se estiver disponível. Nunca invente placeholders.
 

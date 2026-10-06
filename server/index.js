@@ -10,6 +10,7 @@ const pinoHttp = require('pino-http')
 const { logger } = require('./logger')
 const { login, logout, requireAuth, sessionStatus } = require('./auth')
 const { generateReply, OpenAiError } = require('./openaiClient')
+const negativacao = require('./negativacao')
 const { extractTextFromFile, isAcceptedContextFile, ExtractError } = require('./extractText')
 
 const requiredEnv = ['APP_PASSWORD', 'COOKIE_SECRET', 'OPENAI_API_KEY']
@@ -136,6 +137,18 @@ app.post(
     }
   }
 )
+
+const negativacaoLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Muitas negativações em pouco tempo. Aguarde alguns minutos.' },
+})
+
+app.post('/api/negativacao', requireAuth, negativacaoLimiter, negativacao.trigger)
+app.get('/api/negativacao/runs', requireAuth, negativacao.listRuns)
+app.get('/api/negativacao/runs/:id', requireAuth, negativacao.getRun)
 
 // Erros do multer (arquivo grande demais, tipo inválido, etc.) chegam aqui.
 app.use((err, req, res, next) => {

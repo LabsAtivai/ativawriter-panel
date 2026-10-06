@@ -254,6 +254,168 @@
     setInterval(tick, 1000)
   }
 
+  // ---- abas ----
+  const desk = document.querySelector('.desk')
+  const tabButtons = document.querySelectorAll('.tab-btn')
+  const tabPanels = {
+    despacho: document.getElementById('tab-despacho'),
+    negativacao: document.getElementById('tab-negativacao'),
+  }
+  let negTimer = null
+
+  function selectTab(name) {
+    tabButtons.forEach((btn) => {
+      const active = btn.dataset.tab === name
+      btn.classList.toggle('is-active', active)
+      btn.setAttribute('aria-selected', String(active))
+    })
+    Object.entries(tabPanels).forEach(([key, el]) => (el.hidden = key !== name))
+    desk.dataset.tab = name
+    clearInterval(negTimer)
+    if (name === 'negativacao') {
+      loadRuns()
+      negTimer = setInterval(loadRuns, 10000)
+    }
+  }
+  tabButtons.forEach((btn) => btn.addEventListener('click', () => selectTab(btn.dataset.tab)))
+
+  // ---- negativação ----
+  const negForm = document.getElementById('neg-form')
+  const negValue = document.getElementById('neg-value')
+  const negSubmit = document.getElementById('neg-submit')
+  const negError = document.getElementById('neg-error')
+  const negOk = document.getElementById('neg-ok')
+  const negRuns = document.getElementById('neg-runs')
+  const negEmpty = document.getElementById('neg-empty')
+  let openRunId = null
+
+  const STATUS_LABEL = { running: 'Em andamento', completed: 'Concluída', failed: 'Falhou' }
+
+  // O painel grava em UTC (datetime('now') do SQLite, sem fuso).
+  function formatWhen(value) {
+    const date = new Date(String(value).replace(' ', 'T') + 'Z')
+    return date.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })
+  }
+
+  function renderDetail(container, run) {
+    container.textContent = ''
+    if (run.error) {
+      const p = document.createElement('p')
+      p.textContent = run.error
+      container.appendChild(p)
+    }
+    const results = run.account_results || []
+    if (!results.length) {
+      const p = document.createElement('p')
+      p.textContent = 'Sem resultados por conta ainda.'
+      container.appendChild(p)
+      return
+    }
+    const table = document.createElement('table')
+    const head = table.createTHead().insertRow()
+    for (const label of ['Conta Snov.io', 'Lista', 'Enviados', 'Duplicados', 'Falhas']) {
+      const th = document.createElement('th')
+      th.textContent = label
+      head.appendChild(th)
+    }
+    const body = table.createTBody()
+    for (const r of results) {
+      const row = body.insertRow()
+      for (const cell of [r.account_label, r.list_id, r.added, r.duplicates, r.error || r.failed]) {
+        row.insertCell().textContent = cell ?? ''
+      }
+    }
+    container.appendChild(table)
+  }
+
+  async function loadDetail(id, container) {
+    try {
+      const res = await fetch('/api/negativacao/runs/' + id)
+      if (res.ok) renderDetail(container, await res.json())
+    } catch {
+      /* mantém o que já está na tela */
+    }
+  }
+
+  function renderRuns(runs) {
+    negRuns.textContent = ''
+    negEmpty.hidden = runs.length > 0
+    runs.forEach((run) => {
+      const li = document.createElement('li')
+      li.className = 'neg-run'
+
+      const head = document.createElement('button')
+      head.type = 'button'
+      head.className = 'neg-run-head'
+      head.setAttribute('aria-expanded', String(openRunId === run.id))
+
+      const value = document.createElement('span')
+      value.className = 'neg-run-value'
+      value.textContent = run.value
+      const when = document.createElement('span')
+      when.className = 'neg-run-when'
+      when.textContent = formatWhen(run.started_at)
+      const status = document.createElement('span')
+      status.className = 'neg-status neg-status--' + run.status
+      status.textContent = STATUS_LABEL[run.status] || run.status
+      head.append(value, when, status)
+      li.appendChild(head)
+
+      const detail = document.createElement('div')
+      detail.className = 'neg-run-detail'
+      detail.hidden = openRunId !== run.id
+      li.appendChild(detail)
+      if (openRunId === run.id) loadDetail(run.id, detail)
+
+      head.addEventListener('click', () => {
+        openRunId = openRunId === run.id ? null : run.id
+        renderRuns(runs)
+      })
+      negRuns.appendChild(li)
+    })
+  }
+
+  async function loadRuns() {
+    try {
+      const res = await fetch('/api/negativacao/runs')
+      if (res.status === 401) return showScreen(false)
+      if (res.ok) renderRuns(await res.json())
+    } catch {
+      /* painel fora do ar: mantém a lista anterior */
+    }
+  }
+
+  negForm.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    setError(negError, '')
+    negOk.hidden = true
+    const value = negValue.value.trim()
+    if (!value) return
+
+    negSubmit.disabled = true
+    try {
+      const res = await fetch('/api/negativacao', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ value }),
+      })
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok) {
+        setError(negError, data.error || 'Erro ao negativar')
+        return
+      }
+      negValue.value = ''
+      negOk.hidden = false
+      negOk.textContent = 'NEGATIVAÇÃO INICIADA'
+      setTimeout(() => (negOk.hidden = true), 4000)
+      setTimeout(loadRuns, 1500)
+    } catch {
+      setError(negError, 'Erro de conexão. Tente de novo.')
+    } finally {
+      negSubmit.disabled = false
+    }
+  })
+
   loadSignature()
   checkSession()
   startWireClock()

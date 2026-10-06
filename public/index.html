@@ -51,8 +51,13 @@
             </div>
           </div>
           <p class="masthead-sub">Mesa de Despacho &middot; uso interno</p>
+          <nav class="tab-bar" role="tablist" aria-label="Seções">
+            <button type="button" id="tab-btn-despacho" class="tab-btn is-active" role="tab" aria-selected="true" aria-controls="tab-despacho" data-tab="despacho">Despacho</button>
+            <button type="button" id="tab-btn-negativacao" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-negativacao" data-tab="negativacao">Negativação</button>
+          </nav>
         </header>
 
+        <div id="tab-despacho" role="tabpanel" aria-labelledby="tab-btn-despacho">
         <div class="desk-grid">
           <section class="desk-col desk-col--wide" aria-labelledby="in-label">
             <h2 id="in-label" class="section-label">Despacho recebido</h2>
@@ -111,6 +116,28 @@
         </div>
 
         <p id="generate-error" class="marginal-note" hidden></p>
+        </div>
+
+        <div id="tab-negativacao" role="tabpanel" aria-labelledby="tab-btn-negativacao" hidden>
+          <h2 class="section-label">Negativar e-mail ou domínio</h2>
+          <p class="neg-hint">
+            O valor entra na Lista de e-mails a não enviar de todas as contas Snov.io ativas.
+            Use em pedidos de remoção: o contato deixa de receber qualquer cadência.
+          </p>
+          <form id="neg-form" class="neg-form">
+            <label class="field-label" for="neg-value">E-mail ou domínio</label>
+            <div class="neg-row">
+              <input type="text" id="neg-value" class="typed-input neg-input" placeholder="email@dominio.com ou dominio.com" autocomplete="off" spellcheck="false" />
+              <button type="submit" id="neg-submit" class="stamp-btn">Negativar</button>
+            </div>
+            <p id="neg-error" class="marginal-note" hidden></p>
+            <p id="neg-ok" class="wire-status" hidden></p>
+          </form>
+
+          <h2 class="section-label neg-history-label">Histórico</h2>
+          <p id="neg-empty" class="neg-hint" hidden>Nenhuma negativação ainda.</p>
+          <ul id="neg-runs" class="neg-runs"></ul>
+        </div>
       </div>
 
       <div class="paper paper--result" id="result-panel" hidden>
