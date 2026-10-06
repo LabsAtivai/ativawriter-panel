@@ -1,6 +1,7 @@
 // Proxy autenticado para o painel de negativação (repo negativacaomailgun), que
 // espalha o valor pela Lista de e-mails a não enviar de TODAS as contas Snov.io
 // ativas. Aqui só valida e repassa — sem duplicar lógica de Snov.io.
+// scope "commercial": o painel restringe às contas Snov.io do time comercial (lista permitida).
 const PANEL_TIMEOUT_MS = 15000
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -46,7 +47,7 @@ async function trigger(req, res) {
     await callPanel('/api/manual/runs/trigger', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ value }),
+      body: JSON.stringify({ value, scope: 'commercial' }),
     })
   )
 }
